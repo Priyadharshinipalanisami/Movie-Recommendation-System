@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MovieMatch | Movie Recommendation System</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+<header class="topbar"><div class="brand"><span class="brand-icon">▶</span> MovieMatch</div><div class="top-note">CONTENT-BASED RECOMMENDER</div></header>
+<main class="container">
+<section class="hero"><div class="eyebrow">YOUR NEXT FAVORITE FILM</div>
+<h1>Find movies that<br><span>match your taste.</span></h1>
+<p>Enter a movie you love. Discover similar stories using genres, plot, cast, keywords, and directors.</p>
+<form method="post" class="search-form"><span class="search-icon">⌕</span>
+<input id="movieInput" name="movie" value="{{ query }}" placeholder="Try Toy Story, The Matrix, Titanic..." autocomplete="off" required>
+<button type="submit">Recommend <span>→</span></button></form>
+<div class="suggestions"><span>TRY:</span>
+<button type="button" class="chip" data-title="Toy Story">Toy Story</button>
+<button type="button" class="chip" data-title="The Matrix">The Matrix</button>
+<button type="button" class="chip" data-title="Finding Nemo">Finding Nemo</button>
+<button type="button" class="chip" data-title="Dune">Dune</button></div>
+<div class="stats"><div><strong>{{ movie_count }}</strong><span>Movies in catalog</span></div><div><strong>TF-IDF</strong><span>Text representation</span></div><div><strong>Cosine</strong><span>Similarity ranking</span></div></div>
+</section>
+{% if error %}<div class="notice">{{ error }}</div>{% endif %}
+{% if recommendations %}<section class="results"><div class="section-head"><div><div class="eyebrow">HANDPICKED BY THE MODEL</div><h2>Because you searched for <span>{{ query }}</span></h2></div><div class="result-count">{{ recommendations|length }} recommendations</div></div>
+<div class="movie-grid">{% for movie in recommendations %}<article class="movie-card">
+<div class="poster-placeholder"><span>▶</span><small>MOVIEMATCH PICK</small></div>
+<div class="movie-info"><div class="movie-meta"><span class="rank">#{{ loop.index }}</span><span class="score">{{ "%.0f"|format(movie.similarity * 100) }}% text match</span></div>
+<h3>{{ movie.title }}</h3><div class="genres">{{ movie.genres.replace('|', ' · ') }}</div>
+<p>{{ movie.overview if movie.overview else "No plot summary available in the current metadata." }}</p></div></article>{% endfor %}</div></section>{% endif %}
+<footer>Built with Python · Pandas · Scikit-learn · Flask</footer></main>
+<script src="{{ url_for('static', filename='js/script.js') }}"></script></body></html>

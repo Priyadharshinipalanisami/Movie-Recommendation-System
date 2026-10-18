@@ -1,4 +1,4 @@
-# Movie Recommendation System (MCA Mini Project)
+# Movie Recommendation System 
 
 A complete runnable content-based movie recommender using **TF-IDF text features** and **cosine similarity**, with metadata cleaning, EDA, qualitative evaluation, a Flask web UI, and JSON endpoints.
 
